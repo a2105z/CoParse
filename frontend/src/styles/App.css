@@ -1,0 +1,155 @@
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  color: #1a1a2e;
+  margin-bottom: 0.25rem;
+}
+
+.app-header p {
+  color: #6c757d;
+  font-size: 1.1rem;
+}
+
+/* Search Bar */
+.search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #4361ee;
+}
+
+.search-bar select {
+  padding: 0.75rem;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: white;
+}
+
+.search-bar button {
+  padding: 0.75rem 1.5rem;
+  background: #4361ee;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.search-bar button:hover {
+  background: #3a56d4;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  color: #6c757d;
+  padding: 1rem;
+}
+
+/* Results */
+.results-empty {
+  text-align: center;
+  color: #6c757d;
+  padding: 3rem 1rem;
+  background: white;
+  border-radius: 12px;
+  border: 2px dashed #dee2e6;
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.result-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  border-left: 4px solid #dee2e6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.result-card.risk-high {
+  border-left-color: #e63946;
+}
+
+.result-card.risk-medium {
+  border-left-color: #f4a261;
+}
+
+.result-card.risk-low {
+  border-left-color: #2a9d8f;
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.clause-type {
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.risk-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.risk-badge.high {
+  background: #fde8ea;
+  color: #e63946;
+}
+
+.risk-badge.medium {
+  background: #fef3e2;
+  color: #e76f51;
+}
+
+.risk-badge.low {
+  background: #e6f5f3;
+  color: #2a9d8f;
+}
+
+.clause-text {
+  color: #495057;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.explanation {
+  color: #6c757d;
+  font-size: 0.9rem;
+  font-style: italic;
+}
