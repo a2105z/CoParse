@@ -16,6 +16,7 @@ Multipart form:
 
 - `file` (required): PDF or plain text (`.txt`).
 - `hint_contract_type` (optional): `lease` | `internship_offer` | `freelance` | `auto`
+- `hint_role` (optional): e.g. `renter`, `student_intern`, `freelancer`, `general`
 
 Response: `document_id`, `job_id`.
 
