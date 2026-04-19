@@ -15,15 +15,18 @@ object ApiClient {
         isLenient = true
     }
 
-    private val logging = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BASIC
-    }
-
     private val client: OkHttpClient = OkHttpClient.Builder()
         .connectTimeout(60, TimeUnit.SECONDS)
         .readTimeout(120, TimeUnit.SECONDS)
         .writeTimeout(120, TimeUnit.SECONDS)
-        .addInterceptor(logging)
+        .apply {
+            if (BuildConfig.ENABLE_HTTP_LOGS) {
+                val logging = HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BASIC
+                }
+                addInterceptor(logging)
+            }
+        }
         .build()
 
     val api: CoparseApi = Retrofit.Builder()

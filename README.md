@@ -50,6 +50,10 @@ Open the `android/` folder in Android Studio, sync Gradle, run the `app` configu
 
 For a **physical device**, set `coparse.apiBaseUrl` in `local.properties` to your machine’s LAN IP and port (not `localhost`).
 
+### Production API (Render + Neon, free tier)
+
+Deploy the backend with the included [`render.yaml`](render.yaml) (Render web service + your Neon `DATABASE_URL`). Step-by-step: [`docs/DEPLOY_RENDER_NEON.md`](docs/DEPLOY_RENDER_NEON.md). Then set `coparse.releaseApiBaseUrl` in `android/local.properties` to your `https://…onrender.com/` URL.
+
 ## API overview
 
 | Method | Path | Description |

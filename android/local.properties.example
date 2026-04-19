@@ -1,5 +1,9 @@
 ## Copy to local.properties (do not commit local.properties)
 sdk.dir=C\:\\Users\\YOU\\AppData\\Local\\Android\\Sdk
 
-## Optional: override API base URL for emulator/device testing
+## Debug / emulator: HTTP to your machine (cleartext allowed only in debug builds)
 coparse.apiBaseUrl=http://10.0.2.2:8000/
+
+## Release (Play Store): HTTPS API base URL with trailing slash optional
+## Set this to your production API before bundleRelease / upload.
+coparse.releaseApiBaseUrl=https://api.yourdomain.com/

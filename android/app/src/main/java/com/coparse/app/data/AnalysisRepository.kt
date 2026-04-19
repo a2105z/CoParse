@@ -15,6 +15,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 
 class AnalysisRepository(
     context: Context,
@@ -59,6 +60,24 @@ class AnalysisRepository(
 
     suspend fun getAnalysis(documentId: String): AnalysisResponse =
         api.getAnalysis(documentId)
+
+    suspend fun downloadDocumentToCache(documentId: String): File {
+        val res = api.downloadDocument(documentId)
+        if (!res.isSuccessful) error("Failed to download document (${res.code()})")
+        val body = res.body() ?: error("Empty document response")
+
+        val contentType = res.headers()["Content-Type"].orEmpty().lowercase()
+        val ext = when {
+            contentType.contains("pdf") -> "pdf"
+            contentType.contains("text") -> "txt"
+            else -> "bin"
+        }
+        val out = File(appContext.cacheDir, "coparse-$documentId.$ext")
+        body.byteStream().use { input ->
+            out.outputStream().use { output -> input.copyTo(output) }
+        }
+        return out
+    }
 
     suspend fun reanalyze(documentId: String, contractType: String, role: String): String {
         val res = api.reanalyze(documentId, ReanalyzeRequest(contractType, role))

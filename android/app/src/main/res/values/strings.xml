@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">CoParse</string>
+    <string name="screen_home_subtitle">Contract safety for students, renters, and workers</string>
+    <string name="home_what_reviewing">What are you reviewing?</string>
+    <string name="home_hero_hint">Choose a quick path below, or upload any supported PDF.</string>
+    <string name="home_review_lease">Review a lease</string>
+    <string name="home_review_internship">Review an internship or offer</string>
+    <string name="home_review_freelance">Review a freelance or contractor agreement</string>
+    <string name="home_upload_any">Upload any supported PDF</string>
+    <string name="home_saved_reviews">Saved reviews</string>
+    <string name="screen_disclaimer_title">Educational information only</string>
+    <string name="screen_intake_title">Upload contract</string>
+    <string name="screen_processing_title">Analyzing</string>
+    <string name="screen_confirm_title">Confirm context</string>
+    <string name="screen_dashboard_title">Your analysis</string>
+    <string name="screen_clause_title">Clause detail</string>
+    <string name="screen_questions_title">Questions to ask</string>
+    <string name="screen_saved_title">Saved on this device</string>
+    <string name="action_understand">I understand</string>
+    <string name="action_back">Back</string>
+    <string name="action_copy">Tap to copy</string>
+    <string name="toast_copied">Copied</string>
+    <string name="saved_empty">No saved reviews yet. Save a summary from an analysis to see it here.</string>
 </resources>

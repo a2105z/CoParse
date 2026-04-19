@@ -1,0 +1,22 @@
+# Render Blueprint: CoParse FastAPI API + external Neon Postgres
+# https://render.com/docs/blueprint-spec
+#
+# After first deploy, set DATABASE_URL in the Render dashboard to your Neon connection string
+# (see docs/DEPLOY_RENDER_NEON.md). OPENAI_API_KEY is optional (omit for $0 API usage).
+
+services:
+  - type: web
+    name: coparse-api
+    runtime: python
+    plan: free
+    region: oregon
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    preDeployCommand: alembic upgrade head
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: STORAGE_PATH
+        value: ./storage

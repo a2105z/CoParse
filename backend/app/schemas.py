@@ -31,9 +31,14 @@ class AnalysisResponse(BaseModel):
     role: str
     overall_score: int
     signature_readiness: dict[str, Any]
+    analysis_confidence: dict[str, Any] | None = None
+    limitations: list[str] = []
     category_scores: dict[str, int]
     top_issues: list[dict[str, Any]]
     clauses: list[dict[str, Any]]
     missing_protections: list[dict[str, Any]]
     questions_to_ask: list[dict[str, Any]]
     timeline: list[dict[str, Any]]
+    student_journey: dict[str, Any] | None = None
+    next_steps: dict[str, Any] | None = None
+    changes_since_last_run: dict[str, Any] | None = None

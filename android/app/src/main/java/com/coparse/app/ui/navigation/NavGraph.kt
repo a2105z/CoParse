@@ -12,6 +12,7 @@ import com.coparse.app.ui.screens.ClauseDetailScreen
 import com.coparse.app.ui.screens.ConfirmScreen
 import com.coparse.app.ui.screens.DashboardScreen
 import com.coparse.app.ui.screens.DisclaimerScreen
+import com.coparse.app.ui.screens.DocumentReviewScreen
 import com.coparse.app.ui.screens.HomeScreen
 import com.coparse.app.ui.screens.IntakeScreen
 import com.coparse.app.ui.screens.ProcessingScreen
@@ -26,6 +27,7 @@ object Routes {
     const val CONFIRM = "confirm/{documentId}"
     const val DASHBOARD = "dashboard/{documentId}"
     const val CLAUSE = "clause/{documentId}/{clauseId}"
+    const val DOCUMENT_REVIEW = "document_review/{documentId}?focusClauseId={focusClauseId}"
     const val QUESTIONS = "questions/{documentId}"
     const val SAVED = "saved"
 }
@@ -64,6 +66,7 @@ fun CoparseNavHost(
                     mainVm.lastDocumentId = docId
                     navController.navigate("processing/$docId/$jobId")
                 },
+                onNavigateBack = { navController.popBackStack() },
             )
         }
         composable(
@@ -102,6 +105,7 @@ fun CoparseNavHost(
                         launchSingleTop = true
                     }
                 },
+                onNavigateBack = { navController.popBackStack() },
             )
         }
         composable(
@@ -112,6 +116,10 @@ fun CoparseNavHost(
             DashboardScreen(
                 documentId = documentId,
                 onClause = { cid -> navController.navigate("clause/$documentId/$cid") },
+                onOpenDocumentReview = { focusClauseId ->
+                    val focus = focusClauseId ?: ""
+                    navController.navigate("document_review/$documentId?focusClauseId=$focus")
+                },
                 onQuestions = { navController.navigate("questions/$documentId") },
                 onHome = { navController.popBackStack(Routes.HOME, false) },
             )
@@ -129,6 +137,22 @@ fun CoparseNavHost(
                 documentId = documentId,
                 clauseId = clauseId,
                 onBack = { navController.popBackStack() },
+            )
+        }
+        composable(
+            route = Routes.DOCUMENT_REVIEW,
+            arguments = listOf(
+                navArgument("documentId") { type = NavType.StringType },
+                navArgument("focusClauseId") { type = NavType.StringType; nullable = true; defaultValue = "" },
+            ),
+        ) { entry ->
+            val documentId = entry.arguments?.getString("documentId")!!
+            val focusClauseId = entry.arguments?.getString("focusClauseId")
+            DocumentReviewScreen(
+                documentId = documentId,
+                focusClauseId = focusClauseId,
+                onBack = { navController.popBackStack() },
+                onClauseDetail = { cid -> navController.navigate("clause/$documentId/$cid") },
             )
         }
         composable(

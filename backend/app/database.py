@@ -8,6 +8,8 @@ from app.config import settings
 engine = create_engine(
     settings.database_url,
     pool_pre_ping=True,
+    # Neon and other serverless Postgres tiers may recycle connections; avoid stale pool slots.
+    pool_recycle=300,
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()

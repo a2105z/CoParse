@@ -5,7 +5,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -19,8 +20,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.coparse.app.CoParseApplication
+import com.coparse.app.R
+import com.coparse.app.ui.components.AppScaffold
 import kotlinx.coroutines.launch
 
 @Composable
@@ -28,6 +32,7 @@ fun IntakeScreen(
     hintContractType: String?,
     hintRole: String?,
     onUploaded: (documentId: String, jobId: String) -> Unit,
+    onNavigateBack: () -> Unit,
 ) {
     val app = LocalContext.current.applicationContext as CoParseApplication
     val scope = rememberCoroutineScope()
@@ -52,25 +57,36 @@ fun IntakeScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.Start,
+    AppScaffold(
+        title = stringResource(R.string.screen_intake_title),
+        onNavigateBack = onNavigateBack,
     ) {
-        Text(text = "Upload contract", style = MaterialTheme.typography.headlineSmall)
-        Text(
-            text = "Choose a PDF or text file. Analysis runs on the CoParse server.",
-            style = MaterialTheme.typography.bodyMedium,
-        )
-        if (busy) {
-            CircularProgressIndicator()
-        } else {
-            Button(onClick = { launcher.launch("application/pdf") }) {
-                Text("Pick PDF")
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.Start,
+        ) {
+            Text(
+                text = "Choose a PDF. Analysis runs on the CoParse server.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            if (busy) {
+                CircularProgressIndicator()
+            } else {
+                Button(onClick = { launcher.launch("application/pdf") }) {
+                    Text("Pick PDF")
+                }
+            }
+            error?.let {
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
             }
         }
-        error?.let { Text(text = it, color = MaterialTheme.colorScheme.error) }
     }
 }

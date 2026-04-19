@@ -33,12 +33,17 @@ data class AnalysisResponse(
     val role: String,
     @SerialName("overall_score") val overallScore: Int,
     @SerialName("signature_readiness") val signatureReadiness: JsonObject,
+    @SerialName("analysis_confidence") val analysisConfidence: JsonObject? = null,
+    val limitations: List<String> = emptyList(),
     @SerialName("category_scores") val categoryScores: Map<String, Int>,
     @SerialName("top_issues") val topIssues: List<JsonObject>,
     val clauses: List<ClauseItem>,
     @SerialName("missing_protections") val missingProtections: List<MissingProtection>,
     @SerialName("questions_to_ask") val questionsToAsk: List<QuestionItem>,
     val timeline: List<JsonObject>,
+    @SerialName("student_journey") val studentJourney: JsonObject? = null,
+    @SerialName("next_steps") val nextSteps: JsonObject? = null,
+    @SerialName("changes_since_last_run") val changesSinceLastRun: JsonObject? = null,
 )
 
 @Serializable
@@ -48,6 +53,8 @@ data class ClauseItem(
     val theme: String,
     @SerialName("risk_level") val riskLevel: String,
     val tag: String? = null,
+    @SerialName("flag_reason") val flagReason: String? = null,
+    @SerialName("confidence_note") val confidenceNote: String? = null,
     @SerialName("plain_english") val plainEnglish: String,
     @SerialName("compare_note") val compareNote: String? = null,
     @SerialName("suggested_question_neutral") val suggestedQuestionNeutral: String? = null,

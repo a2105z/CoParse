@@ -12,7 +12,22 @@ val lp = rootProject.file("local.properties")
 if (lp.exists()) {
     lp.inputStream().use { localProps.load(it) }
 }
-val apiBaseUrl = localProps.getProperty("coparse.apiBaseUrl") ?: "http://10.0.2.2:8000/"
+
+fun String.withTrailingSlash(): String = trim().trimEnd('/') + "/"
+
+val debugApiBaseUrl =
+    (localProps.getProperty("coparse.apiBaseUrl") ?: "http://10.0.2.2:8000/").withTrailingSlash()
+val releaseApiBaseUrl = (
+    localProps.getProperty("coparse.releaseApiBaseUrl")
+        ?: System.getenv("COPARSE_RELEASE_API_BASE_URL")
+        ?: "https://api.coparse.app/"
+    ).withTrailingSlash()
+
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.inputStream().use { keystoreProperties.load(it) }
+}
 
 android {
     namespace = "com.coparse.app"
@@ -23,17 +38,44 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "0.1.0"
-        buildConfigField("String", "API_BASE_URL", "\"${apiBaseUrl}\"")
+        versionName = "1.0.0"
+    }
+
+    signingConfigs {
+        if (keystorePropertiesFile.exists()) {
+            create("release") {
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+                val storePath = keystoreProperties.getProperty("storeFile")
+                    ?: error("keystore.properties must set storeFile")
+                storeFile = rootProject.file(storePath)
+                storePassword = keystoreProperties.getProperty("storePassword")
+            }
+        }
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "API_BASE_URL", "\"$debugApiBaseUrl\"")
+            buildConfigField("Boolean", "ENABLE_HTTP_LOGS", "true")
+        }
         release {
             isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            buildConfigField("String", "API_BASE_URL", "\"$releaseApiBaseUrl\"")
+            buildConfigField("Boolean", "ENABLE_HTTP_LOGS", "false")
+            signingConfig = if (keystorePropertiesFile.exists()) {
+                signingConfigs.getByName("release")
+            } else {
+                logger.lifecycle(
+                    "CoParse: No keystore.properties — release APK/AAB uses the debug key (upload to Play requires a release keystore; see keystore.properties.example).",
+                )
+                signingConfigs.getByName("debug")
+            }
         }
     }
 
@@ -64,6 +106,7 @@ dependencies {
     androidTestImplementation(composeBom)
 
     implementation("androidx.core:core-ktx:1.13.1")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.activity:activity-compose:1.9.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
