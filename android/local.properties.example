@@ -1,0 +1,5 @@
+## Copy to local.properties (do not commit local.properties)
+sdk.dir=C\:\\Users\\YOU\\AppData\\Local\\Android\\Sdk
+
+## Optional: override API base URL for emulator/device testing
+coparse.apiBaseUrl=http://10.0.2.2:8000/
