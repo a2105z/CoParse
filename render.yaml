@@ -3,6 +3,8 @@
 #
 # After first deploy, set DATABASE_URL in the Render dashboard to your Neon connection string
 # (see docs/DEPLOY_RENDER_NEON.md). OPENAI_API_KEY is optional (omit for $0 API usage).
+#
+# Free tier: preDeployCommand is not supported — migrations run at container start instead.
 
 services:
   - type: web
@@ -12,8 +14,7 @@ services:
     region: oregon
     rootDir: backend
     buildCommand: pip install -r requirements.txt
-    preDeployCommand: alembic upgrade head
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    startCommand: alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
       - key: DATABASE_URL

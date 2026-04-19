@@ -42,7 +42,7 @@ Paste that value into Render as `DATABASE_URL` (next step).
    - Leave **`OPENAI_API_KEY`** empty if you want **no OpenAI API cost** (analysis still runs on rules/templates).
 5. **Manual Deploy** if the first build failed before `DATABASE_URL` was set (migrations need a valid DB).
 
-Migrations run automatically via **`preDeployCommand`**: `alembic upgrade head`.
+**Migrations:** On Render’s **free** tier, `preDeployCommand` is not available. The blueprint runs `alembic upgrade head` at **every service start** (before `uvicorn`), which is safe because migrations are idempotent.
 
 ### Option B — Manual Web Service
 
@@ -50,8 +50,8 @@ If you prefer not to use the blueprint:
 
 - **Root directory:** `backend`
 - **Build command:** `pip install -r requirements.txt`
-- **Pre-deploy command:** `alembic upgrade head`
-- **Start command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+- **Start command:** `alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT`  
+  (On paid plans you can use a pre-deploy command instead if you prefer.)
 - **Environment:** same `DATABASE_URL` (and optional `OPENAI_API_KEY`).
 
 ## 3. Smoke test
