@@ -1,6 +1,11 @@
 # CoParse iOS
 
-Native SwiftUI app — **final product** surface for CoParse.
+Native SwiftUI app — primary product surface for CoParse.
+
+Full product and technical documentation:
+
+- [`../README.md`](../README.md)
+- [`../TECHNICAL.md`](../TECHNICAL.md)
 
 ## Requirements
 

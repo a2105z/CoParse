@@ -1,5 +1,7 @@
 # Architecture
 
+Concise overview. For the full technical design (modules, data models, OCR, scoring, API sequences), see **[`TECHNICAL.md`](../TECHNICAL.md)**.
+
 CoParse has two parts in the monorepo:
 
 1. **iOS (`ios/`)** — SwiftUI on-the-spot scanner. Primary product surface.
@@ -46,6 +48,7 @@ Document Scan / Camera / Photos / PDF
 - `ios/CoParse/` — SwiftUI app, engine, OCR/PDF/document scanner services
 - `ios/CoParse.xcodeproj` — Xcode project
 - `ios/CoParse/PrivacyInfo.xcprivacy` — App Store privacy manifest
+- `TECHNICAL.md` — full technical specification
 - `backend/app/main.py` — API setup
 - `backend/app/pipeline/` — Python reference pipeline
 - `docs/` — product and API notes
